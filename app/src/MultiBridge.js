@@ -53,7 +53,9 @@ export const multiBridge = async () => {
 
         const myAddress = await signer.getAddress();
 
-        const data = iface.encodeFunctionData("depositERC20To", [ l1Token, l2Token, myAddress, ethers.utils.parseEther("0.01"), ethers.BigNumber.from(1), ""  ])
+        const inputdata = [ l1Token, l2Token, myAddress, ethers.utils.parseEther("0.01"), ethers.BigNumber.from(1), "0x00"  ]
+
+        const data = iface.encodeFunctionData("depositERC20To", inputdata)
 
         console.log("TX data for bridge", data)
     }
