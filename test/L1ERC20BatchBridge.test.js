@@ -57,6 +57,12 @@ describe("L1ERC20BatchBridge", function() {
 			}
 		});
 
+		it("Should not fail for empty list", async function() {
+			await expect(
+				bridge.depositERC20BatchTo([])
+			).to.not.be.reverted;
+		});
+
 	});
 
 });
