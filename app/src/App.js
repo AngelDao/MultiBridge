@@ -14,6 +14,7 @@ import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { Logo } from './Logo';
 import { connectWallet, multiBridge } from './MultiBridge';
 import Home from './components/Home';
+import { connectToWallet } from './walletUtils';
 
 function App() {
   return (
