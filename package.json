@@ -12,6 +12,7 @@
     "url": "https://github.com/AngelDao/MultiBridge/issues"
   },
   "devDependencies": {
+    "@eth-optimism/contracts": "^0.5.21",
     "hardhat": "^2.9.3"
   }
 }
