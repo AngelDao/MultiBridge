@@ -1,23 +1,7 @@
 import { Input } from 'antd';
-import { Checkbox } from 'antd';
-import React, { useEffect } from 'react';
+import React from 'react';
 
-export default function Item({
-  name,
-  address,
-  logo,
-  checked,
-  setChecked,
-  amount,
-  setAmount,
-  id,
-}) {
-  function setCh() {
-    let _checked = checked;
-    _checked[id] = false;
-    setChecked(_checked);
-  }
-
+export default function Item({ name, logo, amount, setAmount, id }) {
   function setA(v) {
     let _amount = amount;
     _amount[id] = parseInt(v.target.value);
@@ -34,7 +18,6 @@ export default function Item({
         }}
       >
         <div style={{ display: 'flex' }}>
-          <Checkbox checked={checked[id]} onChange={() => setCh()} />
           <span style={{ marginRight: '1rem', marginLeft: '2rem' }}>
             <img src={logo} width="25" height="25" />
           </span>

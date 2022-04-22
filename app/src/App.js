@@ -22,8 +22,8 @@ function App() {
         <Grid minH="100vh" p={3}>
           <ColorModeSwitcher justifySelf="flex-end" />
           <VStack spacing={8}>
+            <Button onClick={connectWallet}>Connect wallet</Button>
             <Home />
-            {/* <Button onClick={connectWallet}>Connect wallet</Button> */}
             {/* <Button onClick={multiBridge}>Multi Bridge</Button> */}
           </VStack>
         </Grid>

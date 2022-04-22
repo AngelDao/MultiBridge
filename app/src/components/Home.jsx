@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Item from './Item';
 import tokenList from '../tokenList';
 import { Button } from 'antd';
 
 export default function Home() {
-  const [checked, setChecked] = useState(Array(200).fill(true));
   const [amount, setAmount] = useState([Array(200).fill(0)]);
-
-  useEffect(() => {}, [amount, checked]);
 
   return (
     <div>
@@ -18,8 +15,6 @@ export default function Home() {
           return (
             <Item
               id={i}
-              checked={checked}
-              setChecked={setChecked}
               amount={amount}
               setAmount={setAmount}
               name={token.name}
