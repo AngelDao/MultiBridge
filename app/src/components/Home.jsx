@@ -1,5 +1,6 @@
 import Item from './Item';
 import tokenList from '../tokenList';
+import { Button } from 'antd';
 
 export default function Home() {
   return (
@@ -17,6 +18,9 @@ export default function Home() {
           );
         }
       })}
+      <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+        <Button type="primary">Transfer</Button>
+      </div>
     </div>
   );
 }
