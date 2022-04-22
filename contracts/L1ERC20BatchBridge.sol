@@ -10,6 +10,7 @@ contract L1ERC20BatchBridge {
     struct DepositData {
         address _l1Token;
         address _l2Token;
+        address _to;
         uint256 _amount;
         uint32 _l2Gas;
         bytes _data;
@@ -28,6 +29,7 @@ contract L1ERC20BatchBridge {
     // each item in the array holds the following info:
     // - address _l1Token,
     // - address _l2Token,
+    // - address _to,
     // - uint256 _amount,
     // - uint32 _l2Gas,
     // - bytes calldata _data
@@ -38,11 +40,12 @@ contract L1ERC20BatchBridge {
             bridge.depositERC20To(
                 depositData._l1Token,
                 depositData._l2Token,
-                msg.sender,
+                depositData._to == address(0) ? msg.sender : depositData._to,
                 depositData._amount,
                 depositData._l2Gas,
                 depositData._data
             );
         }
     }
+
 }
