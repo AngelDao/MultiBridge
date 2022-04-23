@@ -12,7 +12,9 @@ import {
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { Logo } from './Logo';
-import { connectWallet, multiBridge } from "./MultiBridge"
+import { connectWallet, multiBridge } from './MultiBridge';
+import Home from './components/Home';
+import { connectToWallet } from './walletUtils';
 
 function App() {
   return (
@@ -21,8 +23,8 @@ function App() {
         <Grid minH="100vh" p={3}>
           <ColorModeSwitcher justifySelf="flex-end" />
           <VStack spacing={8}>
-            <Button onClick={connectWallet}>Connect wallet</Button>
-            <Button onClick={multiBridge}>Multi Bridge</Button>
+            <Home />
+            {/* <Button onClick={multiBridge}>Multi Bridge</Button> */}
           </VStack>
         </Grid>
       </Box>
