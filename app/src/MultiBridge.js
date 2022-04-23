@@ -41,6 +41,8 @@ const checkIfApprovedToBridge = async (token, provider) => {
 
     let contract = new ethers.Contract(token, ERC20ABI, provider);
 
+    const signer = provider.getSigner();
+
     let contractWithSigner = contract.connect(signer);
 
     const myAddress = await signer.getAddress();
@@ -53,6 +55,8 @@ const checkIfApprovedToBridge = async (token, provider) => {
 const getApproval = async (token, provider) => {
 
     let contract = new ethers.Contract(token, ERC20ABI, provider);
+
+    const signer = provider.getSigner();
 
     let contractWithSigner = contract.connect(signer);
 
@@ -99,7 +103,7 @@ export const multiBridge = async (callData) => {
 
         const myAddress = await signer.getAddress();
 
-        const inputdata = [ callData[i].l1Token, calldata[i].l2Token, myAddress, ethers.utils.parseEther(callData[i].amount), ethers.BigNumber.from(1), "0x00"  ]
+        const inputdata = [ callData[i].l1Token, callData[i].l2Token, myAddress, ethers.utils.parseEther(callData[i].amount), ethers.BigNumber.from(1), "0x00"  ]
 
         const data = iface.encodeFunctionData("depositERC20To", inputdata)
 
@@ -109,7 +113,9 @@ export const multiBridge = async (callData) => {
 
     let bridgeProxyContract = new ethers.Contract(multiBridgeProxyAddress, BridgeProxyABI, provider);
 
-    let bridgeProxyContractWithSigner = contract.connect(signer);
+    let bridgeProxyContractWithSigner = bridgeProxyContract.connect(signer);
+
+    await bridgeProxyContractWithSigner.depositERC20BatchTo(encodedData)
 
 }
 
