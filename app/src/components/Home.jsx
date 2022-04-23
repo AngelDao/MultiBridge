@@ -11,7 +11,10 @@ export default function Home() {
 
   return (
     <div>
-      <div style={{ fontSize: '2rem' }}>Optimistic Multi Bridge</div>
+      <div style={{ fontSize: '2rem' }}>
+        Optimistic Multi Bridge{' '}
+        <span style={{ fontSize: '0.7rem' }}>(*on Kovan)</span>
+      </div>
       <div style={{ fontSize: '0.8rem', marginBottom: '2rem' }}>
         Bridging is annoying, right? We agree! With the Optimistic Multi Bridge,
         you can bridge all your tokens in 1 transaction.
