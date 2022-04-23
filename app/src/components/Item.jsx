@@ -1,11 +1,18 @@
 import { Input } from 'antd';
 import React from 'react';
+import { Checkbox } from 'antd';
 
-export default function Item({ name, logo, amount, setAmount, id }) {
+export default function Item({ name, logo, amount, setAmount, id, c, setC }) {
   function setA(v) {
     let _amount = amount;
     _amount[id] = parseFloat(v.target.value);
     setAmount(_amount);
+  }
+
+  function _setChecked(v) {
+    let _c = c;
+    _c[id] = v.target.checked;
+    setC(_c);
   }
 
   return (
@@ -31,6 +38,7 @@ export default function Item({ name, logo, amount, setAmount, id }) {
           />
         </span>
       </div>
+      <Checkbox onChange={v => _setChecked(v)} />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Item from './Item';
 import Imprint from './Imprint';
 import Networks from './Networks';
@@ -9,11 +9,26 @@ import { connectWallet, multiBridge } from '../MultiBridge';
 import logo from '../logo1.png';
 import { useToast } from '@chakra-ui/react';
 
+function initChecked() {
+  let obs = {};
+
+  for (var x = 0; x < 200; x++) {
+    obs[x] = false;
+  }
+  console.log(obs);
+
+  return obs;
+}
+
 export default function Home() {
   const [amount, setAmount] = useState([Array(200).fill(0)]);
+  const [c, setC] = useState(initChecked());
+
   const [network, setNetwork] = useState('Optimism');
 
   const toast = useToast();
+
+  useEffect(() => {}, [c]);
 
   const createDataAndSendTx = async () => {
     const callDataArray = createCalldataArray(amount, network);
@@ -78,6 +93,8 @@ export default function Home() {
               id={i}
               amount={amount}
               setAmount={setAmount}
+              c={c}
+              setC={setC}
               name={token.name}
               address={token.address}
               logo={token.logoURI}
