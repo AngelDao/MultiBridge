@@ -288,15 +288,6 @@ export const multiBridge = async () => {
 
     const myAddress = await signer.getAddress();
 
-    // const data = iface.encodeFunctionData('depositERC20To', [
-    //   l1Token,
-    //   l2Token,
-    //   myAddress,
-    //   ethers.utils.parseEther('0.01'),
-    //   ethers.BigNumber.from(1),
-    //   '',
-    // ]);
-
     console.log('TX data for bridge', data);
   }
 };
