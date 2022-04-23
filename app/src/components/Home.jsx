@@ -9,12 +9,13 @@ import { connectWallet } from '../MultiBridge';
 
 export default function Home() {
   const [amount, setAmount] = useState([Array(200).fill(0)]);
+  const [network, setNetwork] = useState('Optimism');
 
   return (
     <div>
       <div style={{ fontSize: '2rem' }}>
         Optimistic Multi Bridge{' '}
-        <span style={{ fontSize: '0.7rem' }}>(*on Kovan)</span>
+        <span style={{ fontSize: '0.7rem' }}>(*only on Testnets)</span>
       </div>
       <div style={{ fontSize: '0.8rem', marginBottom: '2rem' }}>
         Bridging is annoying, right? We agree! With the Optimistic Multi Bridge,
@@ -22,7 +23,7 @@ export default function Home() {
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-around' }}>
         <div>
-          <Networks />
+          <Networks setNetwork={setNetwork} />
         </div>
         <Button onClick={connectWallet}>Connect wallet</Button>
       </div>

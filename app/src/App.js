@@ -15,6 +15,7 @@ import { Logo } from './Logo';
 import { connectWallet, multiBridge } from './MultiBridge';
 import Home from './components/Home';
 import { connectToWallet } from './walletUtils';
+import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 
 function App() {
   return (
