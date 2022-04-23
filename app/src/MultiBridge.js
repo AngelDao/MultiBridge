@@ -80,7 +80,8 @@ const BridgeProxyABI = [
 
 const iface = new ethers.utils.Interface(ABI);
 
-const multiBridgeProxyAddress = "0xd65404695a101B4FD476f4F2222F68917f96b911"
+const multiBridgeProxyAddressOptimism = "0xd65404695a101B4FD476f4F2222F68917f96b911"
+const multiBridgeProxyAddressBoba = "0x43Ff66F6440CD4BCbD0563645ddd6F32DD439cBA"
 
 export const connectWallet = async () => {
     
@@ -138,7 +139,17 @@ const getApproval = async (token, approveFor, provider) => {
     return true;
 }
 
-export const multiBridge = async (callData) => {
+const multiBridgeProxyAddress = (network) => {
+	if (network=="Optimism"){
+		return multiBridgeProxyAddressOptimism
+	} else if (network == "Boba"){
+		return multiBridgeProxyAddressBoba
+	} else {
+		return false
+	}
+}
+
+export const multiBridge = async (callData, network) => {
 
     const provider = await connectWallet();
     const signer = provider.getSigner();
@@ -150,10 +161,10 @@ export const multiBridge = async (callData) => {
     for (var i=0; i < callData.length; i++){   
 
 
-        const isApproved = await checkIfApprovedToBridge(callData[i][0], multiBridgeProxyAddress, provider);
+        const isApproved = await checkIfApprovedToBridge(callData[i][0], multiBridgeProxyAddress(network), provider);
 
         if (!isApproved){
-            await getApproval(callData[i][0], multiBridgeProxyAddress, provider);
+            await getApproval(callData[i][0], multiBridgeProxyAddress(network), provider);
         } else {
             console.log("everything is approved...")
         }
@@ -185,12 +196,18 @@ export const multiBridge = async (callData) => {
         //console.log("TX data for bridge", data)
     }
 
-    let bridgeProxyContract = new ethers.Contract(multiBridgeProxyAddress, BridgeProxyABI, provider);
+    let bridgeProxyContract = new ethers.Contract(multiBridgeProxyAddress(network), BridgeProxyABI, provider);
 
     let bridgeProxyContractWithSigner = bridgeProxyContract.connect(signer);
 
-    console.log(allInputData, multiBridgeProxyAddress)
+    console.log(allInputData, multiBridgeProxyAddress(network))
 
-    await bridgeProxyContractWithSigner.depositERC20BatchTo(allInputData, { gasLimit: ethers.utils.parseUnits('12000000', 'wei') })
+    try {
+    	await bridgeProxyContractWithSigner.depositERC20BatchTo(allInputData, { gasLimit: ethers.utils.parseUnits('12000000', 'wei') })
+
+    	return true;
+    } catch (e){
+    	return false;
+    }
 
 }
