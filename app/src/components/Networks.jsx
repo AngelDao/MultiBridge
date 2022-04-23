@@ -32,16 +32,6 @@ export default function Networks({ setNetwork }) {
           <div style={{ marginLeft: '1rem' }}>Boba</div>
         </div>
       </Option>
-      <Option value="Arbitrum">
-        <div style={{ display: 'flex' }}>
-          <img
-            src="https://icodrops.com/wp-content/uploads/2021/09/Arbitrum_logo.jpeg"
-            width="25"
-            height="2"
-          />
-          <div style={{ marginLeft: '1rem' }}>Arbitrum</div>
-        </div>
-      </Option>
     </Select>
   );
 }
