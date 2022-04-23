@@ -14,7 +14,6 @@ export function createCalldataArray(amount) {
       ]);
     }
   }
-  console.log(calldata);
   return calldata;
 }
 
