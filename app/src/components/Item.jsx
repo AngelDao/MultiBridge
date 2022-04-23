@@ -4,7 +4,7 @@ import React from 'react';
 export default function Item({ name, logo, amount, setAmount, id }) {
   function setA(v) {
     let _amount = amount;
-    _amount[id] = parseInt(v.target.value);
+    _amount[id] = parseFloat(v.target.value);
     setAmount(_amount);
   }
 

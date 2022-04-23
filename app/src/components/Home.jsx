@@ -5,11 +5,21 @@ import Networks from './Networks';
 import tokenList from '../tokenList';
 import { createCalldataArray } from '../calldataUtils';
 import { Button } from '@chakra-ui/react';
-import { connectWallet } from '../MultiBridge';
+import { connectWallet, multiBridge } from '../MultiBridge';
 
 export default function Home() {
   const [amount, setAmount] = useState([Array(200).fill(0)]);
   const [network, setNetwork] = useState('Optimism');
+
+  const createDataAndSendTx = async () => {
+    const callDataArray = createCalldataArray(amount);
+    console.log("calldata array ", callDataArray)
+    if (callDataArray && callDataArray.length > 0){
+      await multiBridge(callDataArray)
+    } else {
+      alert("No tokens selected")
+    }
+  }
 
   return (
     <div>
@@ -43,7 +53,7 @@ export default function Home() {
         }
       })}
       <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-        <Button type="primary" onClick={() => createCalldataArray(amount)}>
+        <Button type="primary" onClick={createDataAndSendTx}>
           Transfer
         </Button>
       </div>
