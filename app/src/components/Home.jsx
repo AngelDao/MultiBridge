@@ -7,16 +7,35 @@ import { createCalldataArray } from '../calldataUtils';
 import { Button } from '@chakra-ui/react';
 import { connectWallet, multiBridge } from '../MultiBridge';
 import logo from '../logo1.png';
+import { useToast } from '@chakra-ui/react';
 
 export default function Home() {
   const [amount, setAmount] = useState([Array(200).fill(0)]);
   const [network, setNetwork] = useState('Optimism');
 
+  const toast = useToast();
+
   const createDataAndSendTx = async () => {
     const callDataArray = createCalldataArray(amount, network);
     console.log('calldata array ', callDataArray);
     if (callDataArray && callDataArray.length > 0) {
-      await multiBridge(callDataArray);
+      const res = await multiBridge(callDataArray, network);
+
+      if (res) {
+        toast({
+          title: 'Transfer was successfull',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: 'Transfer failed',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
     } else {
       alert('No tokens selected');
     }
