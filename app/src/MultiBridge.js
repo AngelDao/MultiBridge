@@ -275,20 +275,27 @@ export const multiBridge = async () => {
 
     const l2Token = '0x4e62882864fB8CE54AFfcAf8D899A286762B011B'; //USDC
 
-    const inputdata = [ l1Token, l2Token, myAddress, ethers.utils.parseEther("0.01"), ethers.BigNumber.from(1), "0x00"  ]
-
-    const data = iface.encodeFunctionData("depositERC20To", inputdata)
-
-    const myAddress = await signer.getAddress();
-
-    const data = iface.encodeFunctionData('depositERC20To', [
+    const inputdata = [
       l1Token,
       l2Token,
       myAddress,
       ethers.utils.parseEther('0.01'),
       ethers.BigNumber.from(1),
-      '',
-    ]);
+      '0x00',
+    ];
+
+    const data = iface.encodeFunctionData('depositERC20To', inputdata);
+
+    const myAddress = await signer.getAddress();
+
+    // const data = iface.encodeFunctionData('depositERC20To', [
+    //   l1Token,
+    //   l2Token,
+    //   myAddress,
+    //   ethers.utils.parseEther('0.01'),
+    //   ethers.BigNumber.from(1),
+    //   '',
+    // ]);
 
     console.log('TX data for bridge', data);
   }
