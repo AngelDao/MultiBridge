@@ -1,4 +1,5 @@
 require("@nomiclabs/hardhat-waffle");
+require("hardhat-gas-reporter");
 require('dotenv').config();
 
 module.exports = {
@@ -11,5 +12,9 @@ module.exports = {
           ? [process.env.DEPLOY_PRIVATE_KEY_TESTNET]
           : [],
     }
+  },
+  gasReporter: {
+    enabled: process.env.REPORT_GAS !== undefined,
+    currency: "USD",
   },
 };
