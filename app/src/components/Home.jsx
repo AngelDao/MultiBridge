@@ -6,6 +6,7 @@ import tokenList from '../tokenList';
 import { createCalldataArray } from '../calldataUtils';
 import { Button } from '@chakra-ui/react';
 import { connectWallet, multiBridge } from '../MultiBridge';
+import logo from '../logo1.png';
 
 export default function Home() {
   const [amount, setAmount] = useState([Array(200).fill(0)]);
@@ -23,11 +24,24 @@ export default function Home() {
 
   return (
     <div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <div>
+          <img src={logo} width="200" height="200" alt="Logo" />
+        </div>
+      </div>
       <div style={{ fontSize: '2rem' }}>
-        Optimistic Multi Bridge{' '}
+        {/* Optimistic Multi Bridge{' '} */}
         <span style={{ fontSize: '0.7rem' }}>(*only on Testnets)</span>
       </div>
-      <div style={{ fontSize: '0.8rem', marginBottom: '2rem' }}>
+      <div
+        style={{ fontSize: '0.8rem', marginTop: '1rem', marginBottom: '2rem' }}
+      >
         Bridging is annoying, right? We agree! With the Optimistic Multi Bridge,
         you can bridge all your tokens in 1 transaction.
       </div>
