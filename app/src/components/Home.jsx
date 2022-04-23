@@ -8,6 +8,7 @@ import { Button } from '@chakra-ui/react';
 import { connectWallet, multiBridge } from '../MultiBridge';
 import logo from '../logo1.png';
 import { useToast } from '@chakra-ui/react';
+import { wrapAndStartStreams } from './Superfluid';
 
 function initState(value) {
   let obs = {};

@@ -5,8 +5,8 @@ export default function Superfluid({
   setRecipient,
   duration,
   setDuration,
-  amount,
-  setAmount,
+  amount2,
+  setAmount2,
 }) {
   return (
     <div>
