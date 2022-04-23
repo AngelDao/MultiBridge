@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Item from './Item';
 import Imprint from './Imprint';
+import Networks from './Networks';
 import tokenList from '../tokenList';
 import { createCalldataArray } from '../calldataUtils';
 import { Button } from '@chakra-ui/react';
@@ -19,7 +20,12 @@ export default function Home() {
         Bridging is annoying, right? We agree! With the Optimistic Multi Bridge,
         you can bridge all your tokens in 1 transaction.
       </div>
-      <Button onClick={connectWallet}>Connect wallet</Button>
+      <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+        <div>
+          <Networks />
+        </div>
+        <Button onClick={connectWallet}>Connect wallet</Button>
+      </div>
       {tokenList.tokens.map((token, i) => {
         // kovan
         if (token.chainId === 42) {
