@@ -1,5 +1,6 @@
 import { Input } from 'antd';
 import React from 'react';
+import TokenStats from './TokenStats';
 
 export default function Item({ name, logo, amount, setAmount, id }) {
   function setA(v) {
@@ -23,12 +24,15 @@ export default function Item({ name, logo, amount, setAmount, id }) {
           </span>
         </div>
         {name}
-        <span style={{ marginLeft: '2rem' }}>
+        <span style={{ display: 'flex', marginLeft: '2rem' }}>
           <Input
             placeholder="# of Tokens"
             value={amount[id]}
             onChange={v => setA(v)}
           />
+          <div style={{ marginLeft: '0.5rem' }}>
+            <TokenStats />
+          </div>
         </span>
       </div>
     </div>
