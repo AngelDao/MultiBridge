@@ -9,25 +9,22 @@ import { connectWallet, multiBridge } from '../MultiBridge';
 import logo from '../logo1.png';
 import { useToast } from '@chakra-ui/react';
 
-function initChecked() {
+function initState(value) {
   let obs = {};
-
   for (var x = 0; x < 200; x++) {
-    obs[x] = false;
+    obs[x] = value;
   }
-  console.log(obs);
-
   return obs;
 }
 
 export default function Home() {
   const [amount, setAmount] = useState([Array(200).fill(0)]);
-  const [c, setC] = useState(initChecked());
+  const [c, setC] = useState(initState(false));
 
   // superfluid stuff
-  const [recipient, setRecipient] = useState([Array(200).fill('')]);
-  const [durtation, setDuration] = useState([Array(200).fill(0)]);
-  const [amount2, setAmount2] = useState([Array(200).fill(0)]);
+  const [recipient, setRecipient] = useState(initState('0x0'));
+  const [duration, setDuration] = useState(initState(0));
+  const [amount2, setAmount2] = useState(initState(0));
 
   const [network, setNetwork] = useState('Optimism');
 
@@ -106,7 +103,7 @@ export default function Home() {
               // superfluid
               recipient={recipient}
               setRecipient={setRecipient}
-              duration={durtation}
+              duration={duration}
               setDuration={setDuration}
               amount2={amount2}
               setAmount2={setAmount2}

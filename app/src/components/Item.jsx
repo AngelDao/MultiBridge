@@ -3,7 +3,22 @@ import React from 'react';
 import Superfluid from './Superfluid';
 import { Checkbox } from 'antd';
 
-export default function Item({ name, logo, amount, setAmount, id, c, setC }) {
+export default function Item({
+  name,
+  logo,
+  amount,
+  setAmount,
+  id,
+  c,
+  setC,
+
+  recipient,
+  setRecipient,
+  duration,
+  setDuration,
+  amount2,
+  setAmount2,
+}) {
   function setA(v) {
     let _amount = amount;
     _amount[id] = parseFloat(v.target.value);
@@ -43,7 +58,16 @@ export default function Item({ name, logo, amount, setAmount, id, c, setC }) {
           </div>
         </span>
       </div>
-      {c[id] && <Superfluid />}
+      {c[id] && (
+        <Superfluid
+          recipient={recipient}
+          setRecipient={setRecipient}
+          duration={duration}
+          setDuration={setDuration}
+          amount2={amount2}
+          setAmount2={setAmount2}
+        />
+      )}
     </div>
   );
 }
