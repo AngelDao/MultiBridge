@@ -1,5 +1,6 @@
 import { Input } from 'antd';
 import React from 'react';
+import Superfluid from './Superfluid';
 import { Checkbox } from 'antd';
 
 export default function Item({ name, logo, amount, setAmount, id, c, setC }) {
@@ -13,6 +14,7 @@ export default function Item({ name, logo, amount, setAmount, id, c, setC }) {
     let _c = c;
     _c[id] = v.target.checked;
     setC(_c);
+    setC({ ...c, id: true });
   }
 
   return (
@@ -30,15 +32,18 @@ export default function Item({ name, logo, amount, setAmount, id, c, setC }) {
           </span>
         </div>
         {name}
-        <span style={{ marginLeft: '2rem' }}>
+        <span style={{ display: 'flex', marginLeft: '2rem', width: '10rem' }}>
           <Input
             placeholder="# of Tokens"
             value={amount[id]}
             onChange={v => setA(v)}
           />
+          <div style={{ marginLeft: '2rem' }}>
+            <Checkbox onChange={v => _setChecked(v)} />
+          </div>
         </span>
       </div>
-      <Checkbox onChange={v => _setChecked(v)} />
+      {c[id] && <Superfluid />}
     </div>
   );
 }
