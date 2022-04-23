@@ -1,6 +1,6 @@
 const hardhat = require("hardhat");
 
-async function deploy(bridgeAddress) {
+async function deployBridge(bridgeAddress) {
 	const Bridge = await hardhat.ethers.getContractFactory("L1ERC20BatchBridge");
 
 	console.log("Deploying L1ERC20BatchBridge contract");
@@ -11,4 +11,4 @@ async function deploy(bridgeAddress) {
 	console.log(`L1ERC20BatchBridge deployed at: ${bridge.address}`);
 }
 
-module.exports = { deploy };
+module.exports = { deployBridge };

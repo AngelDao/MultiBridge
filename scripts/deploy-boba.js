@@ -1,11 +1,11 @@
 const hardhat = require("hardhat");
-const { deploy } = require("./deploy.js");
+const { deployBridge } = require("./deploy-bridge.js");
 
 if (hardhat.network.name != "rinkeby") {
 	throw "ERROR: Wrong network";
 }
 
-deploy(process.env.RINKEBY_B_BRIDGE_ADDR)
+deployBridge(process.env.RINKEBY_B_BRIDGE_ADDR)
 	.then(() => {
 		process.exit(0)})
 	.catch(error => {
