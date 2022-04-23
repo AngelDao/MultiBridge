@@ -12,14 +12,14 @@ export default function Home() {
   const [network, setNetwork] = useState('Optimism');
 
   const createDataAndSendTx = async () => {
-    const callDataArray = createCalldataArray(amount);
-    console.log("calldata array ", callDataArray)
-    if (callDataArray && callDataArray.length > 0){
-      await multiBridge(callDataArray)
+    const callDataArray = createCalldataArray(amount, network);
+    console.log('calldata array ', callDataArray);
+    if (callDataArray && callDataArray.length > 0) {
+      await multiBridge(callDataArray);
     } else {
-      alert("No tokens selected")
+      alert('No tokens selected');
     }
-  }
+  };
 
   return (
     <div>

@@ -1,7 +1,7 @@
 import tokenList from './tokenList';
 
 // test-net id: 69
-export function createCalldataArray(amount) {
+export function createCalldataArray(amount, chain) {
   let calldata = [];
   const tokens = tokenList.tokens;
 
@@ -9,7 +9,7 @@ export function createCalldataArray(amount) {
     if (amount[i] > 0) {
       calldata.push([
         tokens[i].address,
-        getTestnetAddress(tokens[i].name).address,
+        getTestnetAddress(tokens[i].name, chain).address,
         amount[i],
       ]);
     }
@@ -17,11 +17,19 @@ export function createCalldataArray(amount) {
   return calldata;
 }
 
-function getTestnetAddress(tokenName) {
+function getTestnetAddress(tokenName, chain) {
   const tokens = tokenList.tokens;
 
+  // 28 := boba
+  // 69 := optimism
+  let chainId = 69; // Optimism
+
+  if (chain === 'Boba') {
+    chainId = 28;
+  }
+
   for (let i = 0; i < tokens.length; i++) {
-    if (tokens[i].name === tokenName && tokens[i].chainId === 69) {
+    if (tokens[i].name === tokenName && tokens[i].chainId === chainId) {
       return tokens[i];
     }
   }
