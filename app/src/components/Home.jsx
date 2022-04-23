@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Item from './Item';
+import Imprint from './Imprint';
 import tokenList from '../tokenList';
 import { Button } from 'antd';
 
@@ -26,6 +27,9 @@ export default function Home() {
       })}
       <div style={{ display: 'flex', justifyContent: 'space-around' }}>
         <Button type="primary">Transfer</Button>
+      </div>
+      <div style={{ marginTop: '2rem' }}>
+        <Imprint />
       </div>
     </div>
   );
