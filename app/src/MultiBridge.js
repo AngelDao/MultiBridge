@@ -71,23 +71,12 @@ const getApproval = async (token, provider) => {
 
 export const multiBridge = async (callData) => {
 
-    /*
-
-    callData should be an array of:
-
-    address _l1Token,
-    address _l2Token,
-    address _to,
-    uint256 _amount,
-    uint32 _l2Gas,
-
-    */
-
     const provider = await connectWallet();
     const signer = provider.getSigner();
 
 
     let encodedData = [];
+
 
     for (var i=0; i < callData.length; i++){   
 
@@ -118,4 +107,3 @@ export const multiBridge = async (callData) => {
     await bridgeProxyContractWithSigner.depositERC20BatchTo(encodedData)
 
 }
-

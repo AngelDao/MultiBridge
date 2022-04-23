@@ -3,6 +3,7 @@ import React from 'react';
 
 export default function Item({ name, logo, amount, setAmount, id }) {
   function setA(v) {
+    console.log(amount);
     let _amount = amount;
     _amount[id] = parseInt(v.target.value);
     setAmount(_amount);
