@@ -11,11 +11,11 @@ async function deployWallet(factory) {
 	console.log(`New SuperfluidWallet owned by ${res.events[1].args.owner} deployed at: ${res.events[1].args.walletAddress}`);
 }
 
-if (hardhat.network.name != "kovan") {
+if (hardhat.network.name != "kovan" && hardhat.network.name != "kovan-optimism") {
 	throw "ERROR: Wrong network";
 }
 
-deployWallet("0xD8E61baE3e8BfA6361027bb284a2972963db9dC5")
+deployWallet("0x7aABAb7a80055BAe98dA3C3FC6fF7240E3992C77")
 	.then(() => {
 		process.exit(0)})
 	.catch(error => {
