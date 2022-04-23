@@ -1,6 +1,13 @@
 import { Input } from 'antd';
 
-export default function Superfluid({ name, logo, amount, setAmount, id }) {
+export default function Superfluid({
+  recipient,
+  setRecipient,
+  duration,
+  setDuration,
+  amount,
+  setAmount,
+}) {
   return (
     <div>
       <div style={{ marginBottom: '1rem', fontSize: '0.7rem' }}>

@@ -24,6 +24,11 @@ export default function Home() {
   const [amount, setAmount] = useState([Array(200).fill(0)]);
   const [c, setC] = useState(initChecked());
 
+  // superfluid stuff
+  const [recipient, setRecipient] = useState([Array(200).fill('')]);
+  const [durtation, setDuration] = useState([Array(200).fill(0)]);
+  const [amount2, setAmount2] = useState([Array(200).fill(0)]);
+
   const [network, setNetwork] = useState('Optimism');
 
   const toast = useToast();
@@ -98,6 +103,13 @@ export default function Home() {
               name={token.name}
               address={token.address}
               logo={token.logoURI}
+              // superfluid
+              recipient={recipient}
+              setRecipient={setRecipient}
+              duration={durtation}
+              setDuration={setDuration}
+              amount2={amount2}
+              setAmount2={setAmount2}
             />
           );
         }
