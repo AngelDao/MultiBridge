@@ -9,7 +9,8 @@ chai.use(smock.matchers);
 describe("L1ERC20BatchBridge", function() {
 
 	let Bridge, bridge, fakeBridge;
-	let sender, acc1, acc2;
+	let sender, acc1, acc2, fake20;
+	let data;
 
 	before(async function() {
 		Bridge = await ethers.getContractFactory("L1ERC20BatchBridge");
@@ -18,6 +19,13 @@ describe("L1ERC20BatchBridge", function() {
 	});
 
 	beforeEach(async function() {
+		fake20 = await smock.fake("IERC20");
+		data = [
+			[fake20.address, fake20.address, ethers.constants.AddressZero, 3323, 100, "0x"],
+			[fake20.address, fake20.address, acc2.address, 0, 100, "0x100000"],
+			[fake20.address, fake20.address, acc2.address, 100_000, 0, "0x"],
+		];
+
 		fakeBridge = await smock.fake("IL1ERC20Bridge");
 		bridge = await Bridge.deploy(fakeBridge.address);
 	});
@@ -36,13 +44,30 @@ describe("L1ERC20BatchBridge", function() {
 
 	describe("depositERC20BatchTo", function() {
 
-		it("Should pass data to bridge", async function() {
-			const data = [
-				[acc1.address, acc2.address, ethers.constants.AddressZero, 3323, 100, "0x"],
-				[ethers.constants.AddressZero, acc2.address, acc2.address, 0, 100, "0x100000"],
-				[acc2.address, ethers.constants.AddressZero, acc2.address, 100_000, 0, "0x"],
-			];
+		it("Should transfer funds to multi bridge", async function() {
+			await bridge.depositERC20BatchTo(data);
 
+			expect(fake20.transferFrom).to.have.callCount(data.length);
+			for (let i = 0; i < data.length; i++) {
+				const args = fake20.transferFrom.getCall(i).args;
+				expect(args.from).to.equal(sender.address);
+				expect(args.to).to.equal(bridge.address);
+				expect(args.amount).to.equal(data[i][3]);
+			}
+		});
+
+		it("Should approve funds to bridge", async function() {
+			await bridge.depositERC20BatchTo(data);
+
+			expect(fake20.approve).to.have.callCount(data.length);
+			for (let i = 0; i < data.length; i++) {
+				const args = fake20.approve.getCall(i).args;
+				expect(args.spender).to.equal(fakeBridge.address);
+				expect(args.amount).to.equal(data[i][3]);
+			}
+		});
+
+		it("Should pass data to bridge", async function() {
 			await bridge.depositERC20BatchTo(data);
 
 			expect(fakeBridge.depositERC20To).to.have.callCount(data.length);
