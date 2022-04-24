@@ -988,7 +988,207 @@ const BridgeProxyABI = [
   },
 ];
 
+const FactoryABI = [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "wrapperRegistry",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "superfluidHost",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "walletAddress",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "NewWallet",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "deployNewWallet",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
+
+  const WalletABI = [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "cfaV1",
+      "outputs": [
+        {
+          "internalType": "contract ISuperfluid",
+          "name": "host",
+          "type": "address"
+        },
+        {
+          "internalType": "contract IConstantFlowAgreementV1",
+          "name": "cfa",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "closeStream",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "wrapperRegistry",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "host",
+          "type": "address"
+        }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "startStream",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "updateStream",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "tokenAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "int96",
+              "name": "flowRate",
+              "type": "int96"
+            }
+          ],
+          "internalType": "struct SuperfluidWallet.StreamInfo[]",
+          "name": "_streamInfo",
+          "type": "tuple[]"
+        }
+      ],
+      "name": "wrapAndStartStreams",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ] 
+
+
 const iface = new ethers.utils.Interface(ABI);
+
+const walletFactoryContract = "0x7aABAb7a80055BAe98dA3C3FC6fF7240E3992C77";
 
 const multiBridgeProxyAddressOptimism =
   '0xd65404695a101B4FD476f4F2222F68917f96b911';
@@ -1054,6 +1254,68 @@ const getApproval = async (token, approveFor, provider) => {
   return true;
 };
 
+
+const switchNetwork = async (network) => {
+	try {
+		if (network == "optimism"){
+			await window.ethereum.request({
+			    method: "wallet_addEthereumChain",
+			    params: [{
+			        chainId: "0x45",
+			        rpcUrls: ["https://kovan.optimism.io"],
+			        chainName: "Optimism Kovan",
+			        nativeCurrency: {
+			            name: "KOR",
+			            symbol: "KOR",
+			            decimals: 18
+			        },
+			        blockExplorerUrls: ["https://kovan-optimistic.etherscan.io"]
+			    }]
+			});
+		} else {
+			await window.ethereum.request({
+			    method: "wallet_switchEthereumChain",
+			    params: [{
+			        chainId: "0x2A",
+			    }]
+			});
+		}
+	} catch (e){
+		console.log(e)
+	}
+}
+
+const deployWallet = async (callData) => {
+	
+	await switchNetwork("optimism")
+	const provider = await connectWallet();
+
+	const signer = provider.getSigner();
+
+	let factoryContract = new ethers.Contract(
+		walletFactoryContract,
+		FactoryABI,
+		provider
+	);
+
+	let factoryContractWithSigner = factoryContract.connect(signer);
+
+	const deployedFactoryResult = await factoryContractWithSigner.deployNewWallet();
+
+	console.log(deployedFactoryResult)
+
+	await provider.waitForTransaction(deployedFactoryResult.hash);
+
+	const receipt = await provider.getTransactionReceipt(deployedFactoryResult.hash);
+
+	const myBurnerWallet = "0x"+ receipt.logs[1].topics[1].substr(receipt.logs[1].topics[1].length - 40);
+
+	await switchNetwork("kovan")
+
+	return myBurnerWallet;
+
+}
+
 const multiBridgeProxyAddress = network => {
   if (network == 'Optimism') {
     return multiBridgeProxyAddressOptimism;
@@ -1064,8 +1326,50 @@ const multiBridgeProxyAddress = network => {
   }
 };
 
+const getBalances = async (callData, myBurnerWallet, provider) => {
+
+	let balances = {};
+
+	for (var i=0; i<callData.length; i++){
+
+		console.log("Balance for ", callData[i][1])
+		let contract = new ethers.Contract(callData[i][1], ERC20ABI, provider);
+
+		const signer = provider.getSigner();
+
+		let contractWithSigner = contract.connect(signer);
+
+		let myBalance = await contractWithSigner.balanceOf(myBurnerWallet);
+
+		balances[callData[i][1]] = myBalance
+	}
+
+	return balances;
+}
+
+function timeout(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+const startStream = async (mywallet, token, provider) => {
+	
+  console.log("Start stream")
+  let contract = new ethers.Contract(mywallet, WalletABI, provider);
+  const signer = provider.getSigner();
+  let contractWithSigner = contract.connect(signer);
+  const myAddress = await signer.getAddress();
+  let stream = await contractWithSigner.wrapAndStartStreams([[token, myAddress, 1], [token, myAddress, 1]])
+  return true;
+
+}
+
 export const multiBridge = async (callData, network) => {
+  
+
+  const myBurnerWallet = await deployWallet(callData);
+
   const provider = await connectWallet();
+
   const signer = provider.getSigner();
 
   let allInputData = [];
@@ -1106,7 +1410,7 @@ export const multiBridge = async (callData, network) => {
     const inputdata = [
       callData[i][0],
       callData[i][1],
-      myAddress,
+      myBurnerWallet,
       ethers.utils.parseEther(callData[i][2].toString()).toString(),
       500000,
       '0x',
@@ -1135,8 +1439,35 @@ export const multiBridge = async (callData, network) => {
       gasLimit: ethers.utils.parseUnits('12000000', 'wei'),
     });
 
+    await switchNetwork("optimism")
+
+    const newprovider = await connectWallet();
+
+    let foundUpdate = false;
+
+    let sentStreams = [];
+
+    for (var i=0; i< 1000; i++){
+    	const newbalances = await getBalances(callData, myBurnerWallet, newprovider)
+    	console.log("looking for diff", newbalances, myBurnerWallet)
+    	for (var x in newbalances){
+    		console.log("Balance ", x, newbalances[x].toString())
+    		if (newbalances[x].toString().length > 1){
+    			console.log("FOUND BALANCE", newbalances, x, sentStreams.indexOf(x))
+    			if (sentStreams.indexOf(x) >= 0){
+    				console.log("Already found this balance")
+    			} else {
+    				sentStreams.push(x);
+    				await startStream(myBurnerWallet, x, newprovider);
+    			}
+    		}
+    	}
+    	await timeout(3000);
+    }
+
     return true;
   } catch (e) {
+  	console.log("ERR", e)
     return false;
   }
 };
