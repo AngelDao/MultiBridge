@@ -31,7 +31,7 @@ export default function Item({ name, logo, amount, setAmount, id }) {
             onChange={v => setA(v)}
           />
           <div style={{ marginLeft: '0.5rem' }}>
-            <TokenStats />
+            <TokenStats id={id} />
           </div>
         </span>
       </div>
